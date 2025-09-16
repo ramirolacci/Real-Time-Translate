@@ -1,24 +1,59 @@
 import React from 'react';
 import { TranslationEntry } from '../types/Translation';
-import { Languages, Clock } from 'lucide-react';
+import { Languages, Clock, ArrowRightLeft } from 'lucide-react';
 
 interface TranslationDisplayProps {
   translations: TranslationEntry[];
   currentText: string;
   isListening: boolean;
+  onLanguageSwap: () => void;
+  sourceLanguage: 'es' | 'en' | 'auto';
+  targetLanguage: 'es' | 'en';
 }
 
 export const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
   translations,
   currentText,
-  isListening
+  isListening,
+  onLanguageSwap,
+  sourceLanguage,
+  targetLanguage
 }) => {
+  const getLanguageName = (code: string) => {
+    const names: Record<string, string> = { es: 'Español', en: 'English', auto: 'Auto' };
+    return names[code] || code.toUpperCase();
+  };
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
   return (
-    <div className="flex-1 flex flex-col lg:flex-row gap-4">
+    <div className="flex-1 flex flex-col gap-4">
+      {/* Barra superior con intercambio de idioma */}
+      <div className="flex items-center justify-between bg-gray-800 rounded-lg px-4 py-2">
+        <div className="flex items-center gap-3 text-sm text-gray-300">
+          <span className="flex items-center gap-2">
+            <Languages className="w-4 h-4" />
+            <span>{getLanguageName(sourceLanguage)}</span>
+          </span>
+          <ArrowRightLeft className="w-4 h-4 text-gray-400" />
+          <span className="flex items-center gap-2">
+            <Languages className="w-4 h-4 scale-x-[-1]" />
+            <span>{getLanguageName(targetLanguage)}</span>
+          </span>
+        </div>
+        <button
+          onClick={onLanguageSwap}
+          className="flex items-center gap-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600 text-gray-200 text-sm transition-colors"
+          title="Intercambiar idiomas"
+        >
+          <ArrowRightLeft className="w-4 h-4" />
+          Intercambiar
+        </button>
+      </div>
+
+      {/* Contenido de columnas */}
+      <div className="flex-1 flex flex-col lg:flex-row gap-4">
       {/* Texto Original */}
       <div className="flex-1 bg-gray-800 rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3 text-blue-400">
@@ -75,5 +110,6 @@ export const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
         </div>
       </div>
     </div>
+  </div>
   );
 };

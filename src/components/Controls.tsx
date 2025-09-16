@@ -133,32 +133,7 @@ export const Controls: React.FC<ControlsProps> = ({
         />
       </div>
 
-      {/* Selector de idiomas */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">Idiomas:</span>
-          <button
-            onClick={onLanguageSwap}
-            className="p-1 text-gray-400 hover:text-white transition-colors"
-            title="Intercambiar idiomas"
-          >
-            <ArrowRightLeft className="w-4 h-4" />
-          </button>
-        </div>
-        <div className="flex items-center justify-center gap-2 text-sm">
-          <span className={`px-2 py-1 rounded ${
-            audioSettings.sourceLanguage === 'es' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300'
-          }`}>
-            {getLanguageName(audioSettings.sourceLanguage)}
-          </span>
-          <ArrowRightLeft className="w-4 h-4 text-gray-400" />
-          <span className={`px-2 py-1 rounded ${
-            audioSettings.targetLanguage === 'en' ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300'
-          }`}>
-            {getLanguageName(audioSettings.targetLanguage)}
-          </span>
-        </div>
-      </div>
+      {/* Selector de idiomas movido a la parte superior de la pantalla */}
     </div>
   );
 };

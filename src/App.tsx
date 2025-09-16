@@ -167,6 +167,9 @@ function App() {
             translations={translations}
             currentText={currentText}
             isListening={isListening}
+            onLanguageSwap={handleLanguageSwap}
+            sourceLanguage={audioSettings.sourceLanguage}
+            targetLanguage={audioSettings.targetLanguage}
           />
         </div>
 
