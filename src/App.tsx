@@ -59,6 +59,40 @@ function App() {
         };
 
         setTranslations(prev => [newEntry, ...prev]);
+
+        // Hablar la traducción
+        try {
+          if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(translatedText);
+            // Seleccionar idioma/voz acorde al idioma destino
+            const langCode = targetLang === 'es' ? 'es-ES' : 'en-US';
+            utterance.lang = langCode;
+            utterance.volume = Math.min(Math.max(audioSettings.volume, 0), 1);
+
+            // Intentar elegir una voz que coincida con el idioma
+            const pickVoice = () => {
+              const voices = window.speechSynthesis.getVoices();
+              const match = voices.find(v => v.lang?.toLowerCase().startsWith(langCode.toLowerCase()));
+              if (match) utterance.voice = match;
+            };
+
+            // Algunas veces las voces cargan de forma asíncrona
+            if (window.speechSynthesis.getVoices().length === 0) {
+              window.speechSynthesis.onvoiceschanged = () => {
+                pickVoice();
+                window.speechSynthesis.speak(utterance);
+                window.speechSynthesis.onvoiceschanged = null;
+              };
+            } else {
+              pickVoice();
+              window.speechSynthesis.speak(utterance);
+            }
+          } else {
+            console.log('SpeechSynthesis no soportado en este navegador');
+          }
+        } catch (ttsError) {
+          console.warn('Error al reproducir TTS:', ttsError);
+        }
         // Limpiar texto actual solo después de traducción exitosa
         currentTextRef.current = '';
         setCurrentText('');
