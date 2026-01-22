@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { TranslationEntry } from '../types/Translation';
-import { Languages, Clock, ArrowRightLeft } from 'lucide-react';
+import { Languages, ArrowRightLeft, Sparkles } from 'lucide-react';
 
 interface TranslationDisplayProps {
   translations: TranslationEntry[];
@@ -14,100 +14,102 @@ interface TranslationDisplayProps {
 export const TranslationDisplay: React.FC<TranslationDisplayProps> = ({
   translations,
   currentText,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isListening,
   onLanguageSwap,
   sourceLanguage,
   targetLanguage
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [translations, currentText]);
+
   const getLanguageName = (code: string) => {
-    const names: Record<string, string> = { es: 'Español', en: 'English', auto: 'Auto' };
+    const names: Record<string, string> = { es: 'Spanish', en: 'English', auto: 'Auto Detect' };
     return names[code] || code.toUpperCase();
   };
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  const getFlag = (code: string) => {
+    if (code === 'es') return '🇪🇸';
+    if (code === 'en') return '🇺🇸';
+    return '🌐';
   };
 
   return (
-    <div className="flex-1 flex flex-col gap-4">
-      {/* Barra superior con intercambio de idioma centrado */}
-      <div className="bg-gray-800 rounded-lg px-4 py-2">
-        <div className="flex items-center justify-center gap-4 text-sm text-gray-300">
-          <span className="flex items-center gap-2">
-            <Languages className="w-4 h-4" />
-            <span>{getLanguageName(sourceLanguage)}</span>
-          </span>
+    <div className="flex-1 flex flex-col gap-6 h-full">
+      {/* Header with Language Swap */}
+      <div className="flex items-center justify-between p-1">
+        <div className="flex items-center gap-4 bg-slate-900/50 p-2 rounded-2xl border border-white/5 mx-auto glass">
+          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 text-slate-200 min-w-[140px] justify-center transition-colors">
+            <span className="text-xl">{getFlag(sourceLanguage)}</span>
+            <span className="font-medium text-sm tracking-wide">{getLanguageName(sourceLanguage)}</span>
+          </div>
+
           <button
             onClick={onLanguageSwap}
-            className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 text-gray-200 transition-colors"
-            title="Intercambiar idiomas"
+            className="p-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-lg hover:shadow-indigo-500/25 active:scale-95 group"
           >
-            <ArrowRightLeft className="w-5 h-5" />
+            <ArrowRightLeft className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
           </button>
-          <span className="flex items-center gap-2">
-            <Languages className="w-4 h-4 scale-x-[-1]" />
-            <span>{getLanguageName(targetLanguage)}</span>
-          </span>
+
+          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-200 min-w-[140px] justify-center">
+            <span className="text-xl">{getFlag(targetLanguage)}</span>
+            <span className="font-medium text-sm tracking-wide">{getLanguageName(targetLanguage)}</span>
+          </div>
         </div>
       </div>
 
-      {/* Contenido de columnas */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-4">
-      {/* Texto Original */}
-      <div className="flex-1 bg-gray-800 rounded-lg p-4">
-        <div className="flex items-center gap-2 mb-3 text-blue-400">
-          <Languages className="w-4 h-4" />
-          <span className="font-medium">Original</span>
-          {isListening && (
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-          )}
-        </div>
-        
-        <div className="space-y-3 max-h-96 overflow-y-auto">
+      {/* Translations Area */}
+      <div className="flex-1 overflow-y-auto px-4 custom-scrollbar" ref={scrollRef}>
+        <div className="space-y-6 pb-4">
+          {/* Live Transcription */}
           {currentText && (
-            <div className="p-3 bg-gray-700 rounded border-l-2 border-blue-500">
-              <p className="text-gray-200">{currentText}</p>
-              <span className="text-xs text-gray-400">En tiempo real...</span>
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="glass p-6 rounded-2xl border-l-4 border-l-indigo-500 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-50">
+                  <div className="flex items-center gap-2 text-indigo-400 text-xs font-medium uppercase tracking-wider animate-pulse">
+                    <Sparkles className="w-3 h-3" />
+                    Transcribing...
+                  </div>
+                </div>
+                <p className="text-2xl text-white font-light leading-relaxed tracking-wide">
+                  {currentText}
+                </p>
+              </div>
             </div>
           )}
-          
-          {translations.map((entry) => (
-            <div key={entry.id} className="p-3 bg-gray-700 rounded">
-              <p className="text-gray-200 mb-1">{entry.originalText}</p>
-              <div className="flex justify-between items-center text-xs text-gray-400">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {formatTime(entry.timestamp)}
-                </span>
-                <span>{entry.sourceLanguage.toUpperCase()}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Texto Traducido */}
-      <div className="flex-1 bg-gray-800 rounded-lg p-4">
-        <div className="flex items-center gap-2 mb-3 text-green-400">
-          <Languages className="w-4 h-4 scale-x-[-1]" />
-          <span className="font-medium">Traducido</span>
-        </div>
-        
-        <div className="space-y-3 max-h-96 overflow-y-auto">
-          {translations.map((entry) => (
-            <div key={entry.id} className="p-3 bg-gray-700 rounded">
-              <p className="text-gray-200 mb-1">{entry.translatedText}</p>
-              <div className="flex justify-between items-center text-xs text-gray-400">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {formatTime(entry.timestamp)}
-                </span>
-                <span>{entry.targetLanguage.toUpperCase()}</span>
+          {/* History */}
+          <div className="flex flex-col-reverse gap-6">
+            {translations.map((entry) => (
+              <div key={entry.id} className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                {/* Source */}
+                <div className="p-5 rounded-2xl bg-slate-900/40 border border-white/5 hover:border-white/10 transition-colors">
+                  <div className="flex items-center gap-2 mb-2 opacity-50">
+                    <span className="text-xs uppercase tracking-wider font-semibold text-slate-400">{entry.sourceLanguage}</span>
+                  </div>
+                  <p className="text-lg text-slate-300 font-light leading-relaxed opacity-90">{entry.originalText}</p>
+                </div>
+
+                {/* Target */}
+                <div className="p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 hover:border-indigo-500/20 transition-colors relative group">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Languages className="w-4 h-4 text-indigo-400" />
+                  </div>
+                  <div className="flex items-center gap-2 mb-2 opacity-50">
+                    <span className="text-xs uppercase tracking-wider font-semibold text-indigo-300">{entry.targetLanguage}</span>
+                  </div>
+                  <p className="text-xl text-indigo-100 font-light leading-relaxed">{entry.translatedText}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </div>
   );
 };
