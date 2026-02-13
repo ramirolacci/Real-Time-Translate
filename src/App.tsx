@@ -13,7 +13,6 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   const [audioSettings, setAudioSettings] = useState<AudioSettings>({
-    isListening: false,
     volume: 0.8,
     sourceLanguage: 'auto',
     targetLanguage: 'en'
@@ -107,7 +106,6 @@ function App() {
 
   const handleSpeechError = useCallback((error: string) => {
     setError(error);
-    setAudioSettings(prev => ({ ...prev, isListening: false }));
   }, []);
 
   const { isListening, isSupported, hasPermission, startListening, stopListening, requestMicrophonePermission } = useSpeechRecognition({
@@ -129,8 +127,6 @@ function App() {
     } else {
       startListening();
     }
-
-    setAudioSettings(prev => ({ ...prev, isListening: !isListening }));
   }, [isListening, startListening, stopListening, hasPermission, requestMicrophonePermission]);
 
   const handleVolumeChange = useCallback((volume: number) => {
@@ -202,6 +198,7 @@ function App() {
           <div className="w-full lg:w-96 border-b lg:border-b-0 lg:border-l border-white/5 bg-slate-900/30 backdrop-blur-sm p-6 lg:p-8 flex flex-col gap-8 order-1 lg:order-2 z-20">
             <Controls
               audioSettings={audioSettings}
+              isListening={isListening}
               onToggleListening={handleToggleListening}
               onVolumeChange={handleVolumeChange}
               onLanguageSwap={handleLanguageSwap}

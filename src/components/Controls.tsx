@@ -12,6 +12,7 @@ import { AudioSettings } from '../types/Translation';
 
 interface ControlsProps {
   audioSettings: AudioSettings;
+  isListening: boolean;
   onToggleListening: () => void;
   onVolumeChange: (volume: number) => void;
   onLanguageSwap: () => void;
@@ -22,6 +23,7 @@ interface ControlsProps {
 
 export const Controls: React.FC<ControlsProps> = ({
   audioSettings,
+  isListening,
   onToggleListening,
   onVolumeChange,
   isSupported,
@@ -50,7 +52,7 @@ export const Controls: React.FC<ControlsProps> = ({
         </div>
 
         <div className="relative group z-10">
-          <div className={`absolute inset-0 rounded-full blur-2xl transition-all duration-500 ${audioSettings.isListening ? 'bg-indigo-500/40 scale-150' : 'bg-slate-500/0 scale-50'
+          <div className={`absolute inset-0 rounded-full blur-2xl transition-all duration-500 ${isListening ? 'bg-indigo-500/40 scale-150' : 'bg-slate-500/0 scale-50'
             }`}></div>
 
           <button
@@ -59,13 +61,13 @@ export const Controls: React.FC<ControlsProps> = ({
             className={`
               relative w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300
               ${!isSupported ? 'opacity-50 cursor-not-allowed bg-slate-800' :
-                audioSettings.isListening
+                isListening
                   ? 'bg-gradient-to-br from-indigo-500 to-violet-600 shadow-2xl shadow-indigo-500/50 scale-105'
                   : 'bg-gradient-to-br from-slate-800 to-slate-900 shadow-xl border border-white/5 hover:border-indigo-500/30'
               }
             `}
           >
-            {audioSettings.isListening ? (
+            {isListening ? (
               <span className="relative flex h-10 w-10">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                 <Mic className="relative inline-flex h-10 w-10 text-white" />
@@ -85,9 +87,9 @@ export const Controls: React.FC<ControlsProps> = ({
               Enable Microphone
             </button>
           ) : (
-            <span className={`text-xs font-medium tracking-wider uppercase transition-colors ${audioSettings.isListening ? 'text-indigo-400' : 'text-slate-500'
+            <span className={`text-xs font-medium tracking-wider uppercase transition-colors ${isListening ? 'text-indigo-400' : 'text-slate-500'
               }`}>
-              {audioSettings.isListening ? 'Listening...' : 'Ready to Start'}
+              {isListening ? 'Listening...' : 'Ready to Start'}
             </span>
           )}
         </div>

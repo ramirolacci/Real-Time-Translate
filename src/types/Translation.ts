@@ -9,7 +9,6 @@ export interface TranslationEntry {
 }
 
 export interface AudioSettings {
-  isListening: boolean;
   volume: number;
   sourceLanguage: 'es' | 'en' | 'auto';
   targetLanguage: 'es' | 'en';
