@@ -1,35 +1,65 @@
-## Traductor Simultáneo (Gratis y en Tiempo Real)
+<div align="center">
 
-Aplicación React + Vite que escucha tu micrófono, transcribe con la Web Speech API y traduce automáticamente entre español y otros idiomas usando servicios gratuitos (Lingva/MyMemory) con respaldo offline básico. También reproduce por voz la traducción con SpeechSynthesis.
+  <h1>🌐 Real-Time Translate</h1>
+  <p><strong>Traducción e Interpretación Simultánea por Voz en Tiempo Real</strong></p>
 
-### Demo
+  <p>
+    <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"></a>
+    <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"></a>
+    <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite"></a>
+    <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"></a>
+    <a href="./LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-green.svg?style=for-the-badge" alt="Licencia"></a>
+  </p>
 
-![Demo de Traductor Simultáneo](./Demo-Translate.png)
+  <br />
 
-### Características
+  <img src="./Demo-Translate.png" alt="Demo de Traductor Simultáneo" width="850" style="border-radius: 10px; border: 1px solid #e1e4e8;" />
 
-- **Reconocimiento de voz**: Web Speech API (Chrome/Edge/Safari/Opera)
-- **Traducción gratuita**: Lingva (proxy de Google Translate) → MyMemory → diccionario básico offline
-- **Síntesis de voz (TTS)**: lee la traducción en `es-ES` o `en-US`, con control de volumen
-- **Detección automática de idioma** (cuando el origen está en `Auto`)
-- **UI moderna** con controles: iniciar/detener escucha, volumen, intercambio de idiomas y limpieza de historial
-- **Sin claves** ni configuración obligatoria para empezar
+</div>
 
-### Uso
+<br />
 
-1. Presiona el botón de micrófono para comenzar a escuchar.
-2. Habla en español o en cualquier idioma. La app detecta el idioma si el origen está en `Auto`.
-3. Verás el texto original a la izquierda y la traducción a la derecha.
-4. La traducción se reproduce por voz automáticamente en el idioma destino.
-5. Ajusta el volumen desde el panel lateral. Puedes intercambiar idiomas cuando quieras.
+## 🌟 Descripción
 
-### Privacidad
+**Real-Time Translate** es una solución web moderna diseñada para romper las barreras del idioma en conversaciones y reuniones. Permite escuchar la voz a través del micrófono, transcribirla en tiempo real y traducirla de manera instantánea a múltiples idiomas, reproduciendo automáticamente el resultado con síntesis de voz natural.
 
-- El reconocimiento de voz se realiza mediante la Web Speech API del navegador.
-- Las traducciones usan endpoints públicos gratuitos (Lingva/MyMemory). No se almacenan datos en servidores propios de este proyecto.
+Todo funciona de manera **fluida, gratuita y sin necesidad de configurar llaves de API (API Keys)**.
 
-### Licencia
+---
 
-MIT. Puedes usar y modificar libremente. Agradecimientos a los servicios gratuitos utilizados.
+## ✨ Características Destacadas
 
+| Función | Descripción |
+| :--- | :--- |
+| 🎙️ **Reconocimiento de Voz** | Captura continua en tiempo real mediante la **Web Speech API** nativa del navegador. |
+| 🔄 **Traducción Multinivel** | Sistema de tolerancia a fallos: **Lingva API** → **MyMemory** → **Diccionario Offline**. |
+| 🔊 **Síntesis de Audio (TTS)** | Reproducción de voz automática de la traducción con control de volumen dinámico. |
+| 🌐 **Detección Automática** | Identificación inteligente del idioma de origen cuando se selecciona el modo `Auto`. |
+| ⚡ **Zero Setup & Free** | Acceso inmediato sin suscripciones, registros ni claves de API requeridas. |
+| 🎨 **Interfaz Ultra Fluida** | Diseño limpio, accesible y responsivo construido con Tailwind CSS. |
 
+---
+
+## 🎯 Modo de Uso
+
+1. **Activar Micrófono:** Haz clic en el botón principal de micrófono para iniciar la escucha continua.
+2. **Hablar Naturalmente:** Expresa tus ideas en español o en el idioma seleccionado. Si usas el modo `Auto`, el sistema detectará el idioma inicial.
+3. **Lectura y Reproducción Instantánea:** Observa la transcripción en vivo a la izquierda y la traducción en tiempo real a la derecha. El sistema leerá automáticamente la traducción.
+4. **Control Total:** Ajusta el volumen del audio, intercambia idiomas de origen y destino con un solo clic o limpia el historial cuando lo necesites.
+
+---
+
+## 🛡️ Privacidad y Seguridad
+
+- **Procesamiento Local de Voz:** La captura y reconocimiento de voz ocurren directamente en tu navegador usando APIs estándar de la Web.
+- **Sin Almacenamiento Remoto:** Las peticiones de traducción utilizan proxies públicos y no se guardan registros ni datos personales en servidores propios.
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia **MIT**. Consulta el archivo de licencia para más detalles.
+
+<div align="center">
+  <sub>Desarrollado con ❤️ para impulsar la comunicación global sin barreras.</sub>
+</div>
